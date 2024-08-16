@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:e_mekdep_school_maps/core/hive_constants.dart';
 import 'package:hive/hive.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,12 +13,12 @@ part 'map_service_state.dart';
 part 'map_service_cubit.freezed.dart';
 
 class MapServiceCubit extends Cubit<MapServiceState> {
-  final Box<SchoolModel> _schoolsBox;
 
-  MapServiceCubit(this._schoolsBox) : super(const MapServiceState.initial()) {
+  MapServiceCubit() : super(const MapServiceState.initial()) {
     _fetchSchools();
   }
 
+  final Box<SchoolModel> _schoolsBox = HiveContants.schoolsBox;
   final SchoolService _schoolService = SchoolService();
   late StreamSubscription<List<ConnectivityResult>> connectivitySubscription;
   final Connectivity _connectivity = Connectivity();
