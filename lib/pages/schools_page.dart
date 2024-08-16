@@ -13,7 +13,6 @@ class SchoolsPage extends StatefulWidget {
 }
 
 class _SchoolsPageState extends State<SchoolsPage> {
-
   @override
   Widget build(BuildContext context) {
     return context.watch<MapServiceCubit>().state.when(
@@ -21,41 +20,46 @@ class _SchoolsPageState extends State<SchoolsPage> {
           loading: () => ShimmerUtils.shimmerListTile(),
           loaded: (schools) {
             final filteredSchools = schools.where((school) => school.isSecondarySchool == true).toList();
-            return ListView.builder(
-              itemCount: filteredSchools.length,
-              itemBuilder: (context, index) {
-                final school = filteredSchools[index];
-                return Card(
-                  margin: const EdgeInsets.all(3.0),
-                  child: ListTile(
-                    title: Text(school.name.toString()),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.blue,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) {
-                            return SchoolInfoScreen(
-                              schoolName: school.name.toString(),
-                              schoolFullname: school.fullName,
-                              schoolAddress: school.address,
-                              schoolPhone: school.phone,
-                              schoolEmail: school.email,
-                              schoolDigitalized: school.isDigitalized,
-                              schoolGallery: school.galleries,
-                              schoolLatitude: school.latitude,
-                              schoolLongitude: school.longitude,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                );
+            return RefreshIndicator(
+              onRefresh: () async {
+                await context.read<MapServiceCubit>().fetchSchools();
               },
+              child: ListView.builder(
+                itemCount: filteredSchools.length,
+                itemBuilder: (context, index) {
+                  final school = filteredSchools[index];
+                  return Card(
+                    margin: const EdgeInsets.all(3.0),
+                    child: ListTile(
+                      title: Text(school.name.toString()),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.blue,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) {
+                              return SchoolInfoScreen(
+                                schoolName: school.name.toString(),
+                                schoolFullname: school.fullName,
+                                schoolAddress: school.address,
+                                schoolPhone: school.phone,
+                                schoolEmail: school.email,
+                                schoolDigitalized: school.isDigitalized,
+                                schoolGallery: school.galleries,
+                                schoolLatitude: school.latitude,
+                                schoolLongitude: school.longitude,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             );
           },
           errorMsg: (errorMsg) => Center(child: Text(errorMsg.toString())),

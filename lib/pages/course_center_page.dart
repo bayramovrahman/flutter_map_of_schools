@@ -14,41 +14,48 @@ class CourseCenterPage extends StatelessWidget {
           initial: () => ShimmerUtils.shimmerListTile(),
           loading: () => ShimmerUtils.shimmerListTile(),
           loaded: (schools) {
-            final filteredSchools = schools.where((school) => school.isSecondarySchool == false).toList();
-            return ListView.builder(
-              itemCount: filteredSchools.length,
-              itemBuilder: (context, index) {
-                final school = filteredSchools[index];
-                return Card(
-                  margin: const EdgeInsets.all(3.0),
-                  child: ListTile(
-                    title: Text(school.name.toString()),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.blue,
+            final filteredSchools = schools
+                .where((school) => school.isSecondarySchool == false)
+                .toList();
+            return RefreshIndicator(
+              child: ListView.builder(
+                itemCount: filteredSchools.length,
+                itemBuilder: (context, index) {
+                  final school = filteredSchools[index];
+                  return Card(
+                    margin: const EdgeInsets.all(3.0),
+                    child: ListTile(
+                      title: Text(school.name.toString()),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.blue,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) {
+                              return SchoolInfoScreen(
+                                schoolName: school.name.toString(),
+                                schoolFullname: school.fullName,
+                                schoolAddress: school.address,
+                                schoolPhone: school.phone,
+                                schoolEmail: school.email,
+                                schoolDigitalized: school.isDigitalized,
+                                schoolGallery: school.galleries,
+                                schoolLatitude: school.latitude,
+                                schoolLongitude: school.longitude,
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) {
-                            return SchoolInfoScreen(
-                              schoolName: school.name.toString(),
-                              schoolFullname: school.fullName,
-                              schoolAddress: school.address,
-                              schoolPhone: school.phone,
-                              schoolEmail: school.email,
-                              schoolDigitalized: school.isDigitalized,
-                              schoolGallery: school.galleries,
-                              schoolLatitude: school.latitude,
-                              schoolLongitude: school.longitude,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                );
+                  );
+                },
+              ),
+              onRefresh: () {
+                return context.read<MapServiceCubit>().fetchSchools();
               },
             );
           },

@@ -15,7 +15,7 @@ part 'map_service_cubit.freezed.dart';
 class MapServiceCubit extends Cubit<MapServiceState> {
 
   MapServiceCubit() : super(const MapServiceState.initial()) {
-    _fetchSchools();
+    fetchSchools();
   }
 
   final Box<SchoolModel> _schoolsBox = HiveContants.schoolsBox;
@@ -23,7 +23,7 @@ class MapServiceCubit extends Cubit<MapServiceState> {
   late StreamSubscription<List<ConnectivityResult>> connectivitySubscription;
   final Connectivity _connectivity = Connectivity();
 
-  Future<void> _fetchSchools() async {
+  Future<void> fetchSchools() async {
     connectivitySubscription = _connectivity.onConnectivityChanged.listen(
       (event) async {
         if (event.contains((ConnectivityResult.none))) {
