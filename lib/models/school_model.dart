@@ -1,30 +1,79 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import "package:hive/hive.dart";
+part 'school_model.g.dart';
 
+@HiveType(typeId: 0)
 class SchoolModel {
+  @HiveField(0)
   final String? id;
+
+  @HiveField(1)
   final String? code;
+
+  @HiveField(2)
   final String? name;
+
+  @HiveField(3)
   final String? fullName;
+
+  @HiveField(4)
   final dynamic description;
+
+  @HiveField(5)
   final String? address;
+
+  @HiveField(6)
   final String? avatar;
+
+  @HiveField(7)
   final dynamic background;
+
+  @HiveField(8)
   final String? phone;
+
+  @HiveField(9)
   final dynamic email;
+
+  @HiveField(10)
   final String? level;
+
+  @HiveField(11)
   final dynamic galleries;
+
+  @HiveField(12)
   final String? latitude;
+
+  @HiveField(13)
   final String? longitude;
+
+  @HiveField(14)
   final bool? isDigitalized;
+
+  @HiveField(15)
   final bool? isSecondarySchool;
+
+  @HiveField(16)
   final DateTime? updatedAt;
+
+  @HiveField(17)
   final DateTime? createdAt;
+
+  @HiveField(18)
   final dynamic archivedAt;
+
+  @HiveField(19)
   final int? timetablesCount;
+
+  @HiveField(20)
   final int? classroomsCount;
+
+  @HiveField(21)
   final dynamic parent;
+
+  @HiveField(22)
   final dynamic admin;
+
+  @HiveField(23)
   final dynamic specialist;
 
   SchoolModel({
@@ -154,12 +203,20 @@ class SchoolModel {
       latitude: map['latitude'] != null ? map['latitude'] as String : null,
       longitude: map['longitude'] != null ? map['longitude'] as String : null,
       isDigitalized: map['is_digitalized'] != null ? map['is_digitalized'] as bool : null,
-      isSecondarySchool: map['is_secondary_school'] != null ? map['is_secondary_school'] as bool : null,
-      updatedAt: map['updatedAt'] != null ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int) : null,
-      createdAt: map['createdAt'] != null ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int) : null,
+      isSecondarySchool: map['is_secondary_school'] != null
+          ? map['is_secondary_school'] as bool
+          : null,
+      updatedAt: map['updatedAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
+          : null,
+      createdAt: map['createdAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
+          : null,
       archivedAt: map['archivedAt'] as dynamic,
-      timetablesCount: map['timetablesCount'] != null ? map['timetablesCount'] as int : null,
-      classroomsCount: map['classroomsCount'] != null ? map['classroomsCount'] as int : null,
+      timetablesCount:
+          map['timetablesCount'] != null ? map['timetablesCount'] as int : null,
+      classroomsCount:
+          map['classroomsCount'] != null ? map['classroomsCount'] as int : null,
       parent: map['parent'] as dynamic,
       admin: map['admin'] as dynamic,
       specialist: map['specialist'] as dynamic,
@@ -168,7 +225,8 @@ class SchoolModel {
 
   String toJson() => json.encode(toMap());
 
-  factory SchoolModel.fromJson(String source) => SchoolModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory SchoolModel.fromJson(String source) =>
+      SchoolModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -178,59 +236,58 @@ class SchoolModel {
   @override
   bool operator ==(covariant SchoolModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.code == code &&
-      other.name == name &&
-      other.fullName == fullName &&
-      other.description == description &&
-      other.address == address &&
-      other.avatar == avatar &&
-      other.background == background &&
-      other.phone == phone &&
-      other.email == email &&
-      other.level == level &&
-      other.galleries == galleries &&
-      other.latitude == latitude &&
-      other.longitude == longitude &&
-      other.isDigitalized == isDigitalized &&
-      other.isSecondarySchool == isSecondarySchool &&
-      other.updatedAt == updatedAt &&
-      other.createdAt == createdAt &&
-      other.archivedAt == archivedAt &&
-      other.timetablesCount == timetablesCount &&
-      other.classroomsCount == classroomsCount &&
-      other.parent == parent &&
-      other.admin == admin &&
-      other.specialist == specialist;
+
+    return other.id == id &&
+        other.code == code &&
+        other.name == name &&
+        other.fullName == fullName &&
+        other.description == description &&
+        other.address == address &&
+        other.avatar == avatar &&
+        other.background == background &&
+        other.phone == phone &&
+        other.email == email &&
+        other.level == level &&
+        other.galleries == galleries &&
+        other.latitude == latitude &&
+        other.longitude == longitude &&
+        other.isDigitalized == isDigitalized &&
+        other.isSecondarySchool == isSecondarySchool &&
+        other.updatedAt == updatedAt &&
+        other.createdAt == createdAt &&
+        other.archivedAt == archivedAt &&
+        other.timetablesCount == timetablesCount &&
+        other.classroomsCount == classroomsCount &&
+        other.parent == parent &&
+        other.admin == admin &&
+        other.specialist == specialist;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      code.hashCode ^
-      name.hashCode ^
-      fullName.hashCode ^
-      description.hashCode ^
-      address.hashCode ^
-      avatar.hashCode ^
-      background.hashCode ^
-      phone.hashCode ^
-      email.hashCode ^
-      level.hashCode ^
-      galleries.hashCode ^
-      latitude.hashCode ^
-      longitude.hashCode ^
-      isDigitalized.hashCode ^
-      isSecondarySchool.hashCode ^
-      updatedAt.hashCode ^
-      createdAt.hashCode ^
-      archivedAt.hashCode ^
-      timetablesCount.hashCode ^
-      classroomsCount.hashCode ^
-      parent.hashCode ^
-      admin.hashCode ^
-      specialist.hashCode;
+        code.hashCode ^
+        name.hashCode ^
+        fullName.hashCode ^
+        description.hashCode ^
+        address.hashCode ^
+        avatar.hashCode ^
+        background.hashCode ^
+        phone.hashCode ^
+        email.hashCode ^
+        level.hashCode ^
+        galleries.hashCode ^
+        latitude.hashCode ^
+        longitude.hashCode ^
+        isDigitalized.hashCode ^
+        isSecondarySchool.hashCode ^
+        updatedAt.hashCode ^
+        createdAt.hashCode ^
+        archivedAt.hashCode ^
+        timetablesCount.hashCode ^
+        classroomsCount.hashCode ^
+        parent.hashCode ^
+        admin.hashCode ^
+        specialist.hashCode;
   }
 }
