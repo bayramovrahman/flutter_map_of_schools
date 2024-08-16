@@ -9,12 +9,15 @@ import 'package:hive_flutter/adapters.dart';
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(SchoolModelAdapter());
+  final schoolBox = await Hive.openBox<SchoolModel>("schoolsBox");
 
-  runApp(const MyApp());
+  runApp(MyApp(schoolsBox: schoolBox,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Box<SchoolModel> schoolsBox;
+
+  const MyApp({super.key, required this.schoolsBox});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
           create: (context) => MapCubit(),
         ),
         BlocProvider(
-          create: (context) => MapServiceCubit(),
+          create: (context) => MapServiceCubit(schoolsBox),
         ),
       ],
       child: const MaterialApp(

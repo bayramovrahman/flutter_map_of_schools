@@ -202,8 +202,7 @@ class SchoolModel {
       galleries: map['galleries'] as dynamic,
       latitude: map['latitude'] != null ? map['latitude'] as String : null,
       longitude: map['longitude'] != null ? map['longitude'] as String : null,
-      isDigitalized:
-          map['is_digitalized'] != null ? map['is_digitalized'] as bool : null,
+      isDigitalized: map['is_digitalized'] != null ? map['is_digitalized'] as bool : null,
       isSecondarySchool: map['is_secondary_school'] != null
           ? map['is_secondary_school'] as bool
           : null,
