@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               _buildTab(Icons.book, "Kurs Merkezleri"),
             ],
           ),
-          Expanded
+          Expanded(
             child: IndexedStack(
               index: _bottomNavIndex,
               children: [
