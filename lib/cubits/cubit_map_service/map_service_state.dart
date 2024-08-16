@@ -1,0 +1,9 @@
+part of 'map_service_cubit.dart';
+
+@freezed
+class MapServiceState with _$MapServiceState {
+  const factory MapServiceState.initial() = _Initial;
+  const factory MapServiceState.loading() = _Loading;
+  const factory MapServiceState.loaded({required List<SchoolModel> schools}) = _Loaded;
+  const factory MapServiceState.errorMsg({String? errorMsg}) = _ErrorMsg;
+}
