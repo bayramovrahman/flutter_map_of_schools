@@ -1,3 +1,4 @@
+import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
 import 'package:e_mekdep_school_maps/models/school_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => MapServiceCubit(),
+        ),
+        BlocProvider(
+          create: (context) => SchoolInfoCubit(),
         ),
       ],
       child: const MaterialApp(

@@ -1,42 +1,22 @@
-// ignore_for_file: unused_field
-
 import 'package:e_mekdep_school_maps/pages/map_widgets/single_school_widget.dart';
+import 'package:e_mekdep_school_maps/utilities/toast_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:e_mekdep_school_maps/models/school_model.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:e_mekdep_school_maps/utilities/toast_message.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class SchoolInfoScreen extends StatefulWidget {
-  final String schoolName;
-  final dynamic schoolFullname;
-  final dynamic schoolAddress;
-  final dynamic schoolPhone;
-  final dynamic schoolEmail;
-  final dynamic schoolDigitalized;
-  final dynamic schoolGallery;
-  final dynamic schoolLatitude;
-  final dynamic schoolLongitude;
-
-  const SchoolInfoScreen({
-    super.key,
-    required this.schoolName,
-    required this.schoolFullname,
-    required this.schoolAddress,
-    required this.schoolPhone,
-    required this.schoolEmail,
-    required this.schoolDigitalized,
-    required this.schoolGallery,
-    required this.schoolLatitude,
-    required this.schoolLongitude,
-  });
+class SchoolInfoPage extends StatefulWidget {
+  const SchoolInfoPage({super.key});
 
   @override
-  State<SchoolInfoScreen> createState() => _SchoolInfoScreenState();
+  State<SchoolInfoPage> createState() => _SchoolInfoPageState();
 }
 
-class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
+class _SchoolInfoPageState extends State<SchoolInfoPage> {
   // Just empty column
 
   final PageController _pageController = PageController();
@@ -58,23 +38,48 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              _tapWidget(),
-              _schoolGalleries(),
-              _infoSchool(),
-            ],
-          ),
-        ),
+      body: BlocBuilder<SchoolInfoCubit, SchoolInfoState>(
+        builder: (context, state) {
+          return state.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            loaded: (schoolInfo) {
+              final school = schoolInfo.first;
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      _tapWidget(context),
+                      _schoolGalleries(context: context, school: school),
+                      _infoSchool(school: school),
+                    ],
+                  ),
+                ),
+              );
+            },
+            error: (errMsg) => const Center(
+              child: Text(
+                "Näsazlyk ýüza çykdy!",
+              ),
+            ),
+          );
+        },
       ),
-      floatingActionButton: _floatingActionButton(),
+      floatingActionButton: BlocBuilder<SchoolInfoCubit, SchoolInfoState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            loaded: (schoolInfo) {
+              final school = schoolInfo.first;
+              return _floatingActionButton(school: school);
+            },
+            orElse: () => const SizedBox.shrink(),
+          );
+        },
+      ),
     );
   }
 
-  Widget _tapWidget() {
+  Widget _tapWidget(BuildContext context) {
     return Card(
       color: Colors.grey[200],
       child: SizedBox(
@@ -110,12 +115,12 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
     );
   }
 
-  Widget _schoolGalleries() {
+  Widget _schoolGalleries({required BuildContext context, required SchoolModel school}) {
     return Card(
       color: Colors.grey[200],
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: widget.schoolGallery != null && widget.schoolGallery is List
+        child: school.galleries != null && school.galleries is List
             ? Column(
                 children: [
                   SizedBox(
@@ -123,10 +128,10 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                     height: MediaQuery.of(context).size.height * 0.25,
                     child: PageView.builder(
                       controller: _pageController,
-                      itemCount: widget.schoolGallery.length,
+                      itemCount: school.galleries.length,
                       itemBuilder: (context, index) {
                         return Image.network(
-                          widget.schoolGallery[index],
+                          school.galleries[index],
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
@@ -141,7 +146,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   const SizedBox(height: 8.0),
                   SmoothPageIndicator(
                     controller: _pageController,
-                    count: widget.schoolGallery.length,
+                    count: school.galleries.length,
                     effect: const WormEffect(
                       activeDotColor: Colors.blue,
                       dotColor: Colors.grey,
@@ -172,7 +177,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
     );
   }
 
-  Widget _infoSchool() {
+  Widget _infoSchool({required SchoolModel school}) {
     return Card(
       color: Colors.grey[200],
       child: Padding(
@@ -190,9 +195,9 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (widget.schoolName.isNotEmpty)
+                if (school.name != null && school.name!.isNotEmpty)
                   Text(
-                    widget.schoolName,
+                    school.name.toString(),
                     style: const TextStyle(
                       fontSize: 28.0,
                       fontWeight: FontWeight.bold,
@@ -201,8 +206,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                 const SizedBox(height: 16.0),
                 Container(
                   decoration: BoxDecoration(
-                    color: widget.schoolDigitalized == null ||
-                            !widget.schoolDigitalized
+                    color: school.isDigitalized == null || school.isDigitalized == false
                         ? Colors.grey[300]
                         : Colors.green[800],
                     borderRadius: BorderRadius.circular(16.0),
@@ -210,14 +214,12 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
-                      widget.schoolDigitalized == null ||
-                              !widget.schoolDigitalized
+                      school.isDigitalized == null || school.isDigitalized == false
                           ? 'Sanly ulgamda elyeter däl'
                           : 'Sanly ulgamda elyeter',
                       style: TextStyle(
                         fontSize: 16.0,
-                        color: widget.schoolDigitalized == null ||
-                                !widget.schoolDigitalized
+                        color: school.isDigitalized == null || school.isDigitalized == false
                             ? Colors.black
                             : Colors.white,
                       ),
@@ -225,8 +227,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-                if (widget.schoolAddress != null &&
-                    widget.schoolAddress.isNotEmpty)
+                if (school.address != null && school.address!.isNotEmpty)
                   Row(
                     children: [
                       const Icon(
@@ -236,7 +237,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                       const SizedBox(width: 6.0),
                       Expanded(
                         child: Text(
-                          widget.schoolAddress,
+                          school.address.toString(),
                           style: const TextStyle(
                             fontSize: 16.0,
                           ),
@@ -246,7 +247,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                     ],
                   ),
                 const SizedBox(height: 16.0),
-                if (widget.schoolPhone != null && widget.schoolPhone.isNotEmpty)
+                if (school.phone != null && school.phone!.isNotEmpty)
                   Row(
                     children: [
                       const Icon(
@@ -255,7 +256,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                       ),
                       const SizedBox(width: 6.0),
                       Text(
-                        "+993${widget.schoolPhone}",
+                        "+993${school.phone}",
                         style: const TextStyle(
                           fontSize: 18.0,
                         ),
@@ -263,7 +264,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                     ],
                   ),
                 const SizedBox(height: 16.0),
-                if (widget.schoolEmail != null && widget.schoolEmail.isNotEmpty)
+                if (school.email != null && school.email.isNotEmpty)
                   Row(
                     children: [
                       const Icon(
@@ -273,7 +274,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                       const SizedBox(width: 6.0),
                       Expanded(
                         child: Text(
-                          widget.schoolEmail,
+                          school.email,
                           style: const TextStyle(
                             fontSize: 18.0,
                           ),
@@ -289,7 +290,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
     );
   }
 
-  SpeedDial _floatingActionButton() {
+  SpeedDial _floatingActionButton({required SchoolModel school}) {
     return SpeedDial(
       icon: Icons.menu,
       activeIcon: Icons.close,
@@ -299,28 +300,25 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
         SpeedDialChild(
           child: const Icon(Icons.call),
           label: 'Jaň et',
-          onTap: () => _checkPhoneNumber(),
+          onTap: () => _checkPhoneNumber(school: school),
         ),
         SpeedDialChild(
           child: const Icon(Icons.mail),
           label: 'Hat ugrat',
-          onTap: () => _checkEmailAddress(),
+          onTap: () => _checkEmailAddress(school: school),
         ),
         SpeedDialChild(
           child: const Icon(Icons.location_on),
           label: 'Kartada görkez',
-          onTap: () => _checkSchoolMap(),
+          onTap: () => _checkSchoolMap(school: school),
         ),
       ],
     );
   }
 
-  void _checkPhoneNumber() async {
-    if (widget.schoolPhone != null &&
-        widget.schoolPhone is String &&
-        widget.schoolPhone.isNotEmpty) {
-      String cleanedPhoneNumber =
-          widget.schoolPhone.replaceAll('-', '').replaceAll(' ', '');
+  void _checkPhoneNumber({required SchoolModel school}) async {
+    if (school.phone != null && school.phone is String && school.phone!.isNotEmpty) {
+      String cleanedPhoneNumber = school.phone!.replaceAll('-', '').replaceAll(' ', '');
       String phoneNumber = "tel:+993$cleanedPhoneNumber";
       if (await canLaunchUrl(Uri.parse(phoneNumber))) {
         await launchUrl(Uri.parse(phoneNumber));
@@ -332,14 +330,14 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
     }
   }
 
-  void _checkEmailAddress() {
-    if (widget.schoolEmail != null &&
-        widget.schoolEmail is String &&
-        widget.schoolEmail.isNotEmpty) {
-      if (widget.schoolEmail.contains('@')) {
+  void _checkEmailAddress({required SchoolModel school}) {
+    if (school.email != null &&
+        school.email is String &&
+        school.email.isNotEmpty) {
+      if (school.email.contains('@')) {
         final Uri emailLaunchUri = Uri(
           scheme: 'mailto',
-          path: widget.schoolEmail.toString(),
+          path: school.email.toString(),
         );
         launchUrl(emailLaunchUri);
       } else {
@@ -350,21 +348,21 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
     }
   }
 
-  void _checkSchoolMap() {
-    if ((widget.schoolLatitude != null) &&
-        (widget.schoolLatitude is String) &&
-        (widget.schoolLatitude.isNotEmpty)) {
-      if ((widget.schoolLongitude != null) &&
-          (widget.schoolLongitude is String) &&
-          (widget.schoolLongitude.isNotEmpty)) {
-        _latitude = double.parse(widget.schoolLatitude.toString());
-        _longitude = double.parse(widget.schoolLongitude.toString());
+  void _checkSchoolMap({required SchoolModel school}) {
+    if ((school.latitude != null) &&
+        (school.latitude is String) &&
+        (school.latitude!.isNotEmpty)) {
+      if ((school.longitude != null) &&
+          (school.longitude is String) &&
+          (school.longitude!.isNotEmpty)) {
+        _latitude = double.parse(school.latitude.toString());
+        _longitude = double.parse(school.longitude.toString());
         Navigator.push(
           context,
           CupertinoPageRoute(
             builder: (context) {
               return SingleSchoolMapWidget(
-                schoolName: widget.schoolName,
+                schoolName: school.name.toString(),
                 latitude: _latitude,
                 longitude: _longitude,
               );

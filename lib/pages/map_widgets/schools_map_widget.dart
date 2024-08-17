@@ -1,3 +1,4 @@
+import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
 import 'package:e_mekdep_school_maps/cubits/cubit_map_service/map_service_cubit.dart';
 import 'package:e_mekdep_school_maps/pages/school_info_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,8 +34,7 @@ class _SchoolsMapWidgetState extends State<SchoolsMapWidget> {
                   school.longitude != null;
             }).map((school) {
               final double latitude = double.parse(school.latitude.toString());
-              final double longitude =
-                  double.parse(school.longitude.toString());
+              final double longitude = double.parse(school.longitude.toString());
 
               return Marker(
                 point: LatLng(latitude, longitude),
@@ -55,22 +55,11 @@ class _SchoolsMapWidgetState extends State<SchoolsMapWidget> {
                       ),
                     GestureDetector(
                       onTap: () {
+                        context.read<SchoolInfoCubit>().fetchInfoSchool(schools: [school]);
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) {
-                              return SchoolInfoScreen(
-                                schoolName: school.name.toString(),
-                                schoolFullname: school.fullName,
-                                schoolAddress: school.address,
-                                schoolPhone: school.phone,
-                                schoolEmail: school.email,
-                                schoolDigitalized: school.isDigitalized,
-                                schoolGallery: school.galleries,
-                                schoolLatitude: school.latitude,
-                                schoolLongitude: school.longitude,
-                              );
-                            },
+                            builder: (context) => const SchoolInfoPage(),
                           ),
                         );
                       },

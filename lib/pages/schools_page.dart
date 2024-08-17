@@ -1,18 +1,14 @@
+import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
+import 'package:e_mekdep_school_maps/pages/school_info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:e_mekdep_school_maps/pages/school_info_page.dart';
 import 'package:e_mekdep_school_maps/utilities/shimmer_util.dart';
 import 'package:e_mekdep_school_maps/cubits/cubit_map_service/map_service_cubit.dart';
 
-class SchoolsPage extends StatefulWidget {
+class SchoolsPage extends StatelessWidget {
   const SchoolsPage({super.key});
 
-  @override
-  State<SchoolsPage> createState() => _SchoolsPageState();
-}
-
-class _SchoolsPageState extends State<SchoolsPage> {
   @override
   Widget build(BuildContext context) {
     return context.watch<MapServiceCubit>().state.when(
@@ -36,22 +32,11 @@ class _SchoolsPageState extends State<SchoolsPage> {
                         color: Colors.blue,
                       ),
                       onTap: () {
+                        context.read<SchoolInfoCubit>().fetchInfoSchool(schools: [school]);
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) {
-                              return SchoolInfoScreen(
-                                schoolName: school.name.toString(),
-                                schoolFullname: school.fullName,
-                                schoolAddress: school.address,
-                                schoolPhone: school.phone,
-                                schoolEmail: school.email,
-                                schoolDigitalized: school.isDigitalized,
-                                schoolGallery: school.galleries,
-                                schoolLatitude: school.latitude,
-                                schoolLongitude: school.longitude,
-                              );
-                            },
+                            builder: (context) => const SchoolInfoPage(),
                           ),
                         );
                       },
