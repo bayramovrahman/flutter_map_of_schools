@@ -13,8 +13,10 @@ class SchoolsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return context.watch<MapServiceCubit>().state.when(
           loading: () => ShimmerUtils.shimmerListTile(),
-          loaded: (schools) {
-            final filteredSchools = schools.where((school) => school.isSecondarySchool == true).toList();
+          loaded: (schools, zoom) {
+            final filteredSchools = schools
+                .where((school) => school.isSecondarySchool == true)
+                .toList();
             return RefreshIndicator(
               onRefresh: () async {
                 await context.read<MapServiceCubit>().fetchSchools();
@@ -32,7 +34,9 @@ class SchoolsPage extends StatelessWidget {
                         color: Colors.blue,
                       ),
                       onTap: () {
-                        context.read<SchoolInfoCubit>().fetchInfoSchool(schools: [school]);
+                        context
+                            .read<SchoolInfoCubit>()
+                            .fetchInfoSchool(schools: [school]);
                         Navigator.push(
                           context,
                           CupertinoPageRoute(

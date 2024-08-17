@@ -19,21 +19,21 @@ mixin _$MapServiceState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<SchoolModel> schools) loaded,
+    required TResult Function(List<SchoolModel> schools, double zoom) loaded,
     required TResult Function(String? errorMsg) errorMsg,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<SchoolModel> schools)? loaded,
+    TResult? Function(List<SchoolModel> schools, double zoom)? loaded,
     TResult? Function(String? errorMsg)? errorMsg,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<SchoolModel> schools)? loaded,
+    TResult Function(List<SchoolModel> schools, double zoom)? loaded,
     TResult Function(String? errorMsg)? errorMsg,
     required TResult orElse(),
   }) =>
@@ -119,7 +119,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<SchoolModel> schools) loaded,
+    required TResult Function(List<SchoolModel> schools, double zoom) loaded,
     required TResult Function(String? errorMsg) errorMsg,
   }) {
     return loading();
@@ -129,7 +129,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<SchoolModel> schools)? loaded,
+    TResult? Function(List<SchoolModel> schools, double zoom)? loaded,
     TResult? Function(String? errorMsg)? errorMsg,
   }) {
     return loading?.call();
@@ -139,7 +139,7 @@ class _$LoadingImpl implements _Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<SchoolModel> schools)? loaded,
+    TResult Function(List<SchoolModel> schools, double zoom)? loaded,
     TResult Function(String? errorMsg)? errorMsg,
     required TResult orElse(),
   }) {
@@ -194,7 +194,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<SchoolModel> schools});
+  $Res call({List<SchoolModel> schools, double zoom});
 }
 
 /// @nodoc
@@ -209,12 +209,17 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? schools = null,
+    Object? zoom = null,
   }) {
     return _then(_$LoadedImpl(
       schools: null == schools
           ? _value._schools
           : schools // ignore: cast_nullable_to_non_nullable
               as List<SchoolModel>,
+      zoom: null == zoom
+          ? _value.zoom
+          : zoom // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -222,7 +227,8 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl({required final List<SchoolModel> schools})
+  const _$LoadedImpl(
+      {required final List<SchoolModel> schools, required this.zoom})
       : _schools = schools;
 
   final List<SchoolModel> _schools;
@@ -234,8 +240,11 @@ class _$LoadedImpl implements _Loaded {
   }
 
   @override
+  final double zoom;
+
+  @override
   String toString() {
-    return 'MapServiceState.loaded(schools: $schools)';
+    return 'MapServiceState.loaded(schools: $schools, zoom: $zoom)';
   }
 
   @override
@@ -243,12 +252,13 @@ class _$LoadedImpl implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
-            const DeepCollectionEquality().equals(other._schools, _schools));
+            const DeepCollectionEquality().equals(other._schools, _schools) &&
+            (identical(other.zoom, zoom) || other.zoom == zoom));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_schools));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_schools), zoom);
 
   @JsonKey(ignore: true)
   @override
@@ -260,32 +270,32 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<SchoolModel> schools) loaded,
+    required TResult Function(List<SchoolModel> schools, double zoom) loaded,
     required TResult Function(String? errorMsg) errorMsg,
   }) {
-    return loaded(schools);
+    return loaded(schools, zoom);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<SchoolModel> schools)? loaded,
+    TResult? Function(List<SchoolModel> schools, double zoom)? loaded,
     TResult? Function(String? errorMsg)? errorMsg,
   }) {
-    return loaded?.call(schools);
+    return loaded?.call(schools, zoom);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<SchoolModel> schools)? loaded,
+    TResult Function(List<SchoolModel> schools, double zoom)? loaded,
     TResult Function(String? errorMsg)? errorMsg,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(schools);
+      return loaded(schools, zoom);
     }
     return orElse();
   }
@@ -326,10 +336,12 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements MapServiceState {
-  const factory _Loaded({required final List<SchoolModel> schools}) =
-      _$LoadedImpl;
+  const factory _Loaded(
+      {required final List<SchoolModel> schools,
+      required final double zoom}) = _$LoadedImpl;
 
   List<SchoolModel> get schools;
+  double get zoom;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -401,7 +413,7 @@ class _$ErrorMsgImpl implements _ErrorMsg {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<SchoolModel> schools) loaded,
+    required TResult Function(List<SchoolModel> schools, double zoom) loaded,
     required TResult Function(String? errorMsg) errorMsg,
   }) {
     return errorMsg(this.errorMsg);
@@ -411,7 +423,7 @@ class _$ErrorMsgImpl implements _ErrorMsg {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<SchoolModel> schools)? loaded,
+    TResult? Function(List<SchoolModel> schools, double zoom)? loaded,
     TResult? Function(String? errorMsg)? errorMsg,
   }) {
     return errorMsg?.call(this.errorMsg);
@@ -421,7 +433,7 @@ class _$ErrorMsgImpl implements _ErrorMsg {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<SchoolModel> schools)? loaded,
+    TResult Function(List<SchoolModel> schools, double zoom)? loaded,
     TResult Function(String? errorMsg)? errorMsg,
     required TResult orElse(),
   }) {

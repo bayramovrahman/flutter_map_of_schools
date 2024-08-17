@@ -22,6 +22,7 @@ class MapServiceCubit extends Cubit<MapServiceState> {
   final SchoolService _schoolService = SchoolService();
   late StreamSubscription<List<ConnectivityResult>> connectivitySubscription;
   final Connectivity _connectivity = Connectivity();
+  double _currentZoom = 10.0;
 
   Future<void> fetchSchools() async {
     connectivitySubscription = _connectivity.onConnectivityChanged.listen(
@@ -29,7 +30,7 @@ class MapServiceCubit extends Cubit<MapServiceState> {
         if (event.contains((ConnectivityResult.none))) {
           if (_schoolsBox.isNotEmpty) {
             final _schoolsFromHive = _schoolsBox.values.toList();
-            emit(MapServiceState.loaded(schools: _schoolsFromHive));
+            emit(MapServiceState.loaded(schools: _schoolsFromHive, zoom: _currentZoom));
           } else {
             emit(
               const MapServiceState.errorMsg(
@@ -41,9 +42,16 @@ class MapServiceCubit extends Cubit<MapServiceState> {
           _schoolsBox.clear();
           final _fetchSchools = await _schoolService.fetchSchools();
           await _schoolsBox.addAll(_fetchSchools);
-          emit(MapServiceState.loaded(schools: _fetchSchools));
+          emit(MapServiceState.loaded(schools: _fetchSchools, zoom: _currentZoom));
         }
       },
     );
   }
+
+  void updateZoom(double zoom) {
+    _currentZoom = zoom;
+    emit(MapServiceState.loaded(schools: (state as _Loaded).schools, zoom: zoom));
+  }
+
+  double get currentZoom => _currentZoom;
 }

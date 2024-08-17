@@ -14,9 +14,9 @@ class SchoolMapPage extends StatelessWidget {
           initial: () => const Center(child: CircularProgressIndicator()),
           indexWidget: (index) {
             if (index == 0) {
-              return const SchoolsMapWidget();
+              return schoolsMapWidget();
             } else {
-              return const CourseMapWidget();
+              return courseMapWidget();
             }
           },
           errorMsg: (errorMsg) => Center(
