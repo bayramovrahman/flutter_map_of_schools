@@ -1,12 +1,10 @@
-import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
-import 'package:e_mekdep_school_maps/pages/school_info_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_mekdep_school_maps/core/map_constants.dart';
 import 'package:e_mekdep_school_maps/cubits/cubit_map_service/map_service_cubit.dart';
+import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
 
 const String _mapUrl = MapConstants.mapUrl;
 
@@ -42,15 +40,8 @@ Widget courseMapWidget() {
                   ),
                 GestureDetector(
                   onTap: () {
-                    context
-                        .read<SchoolInfoCubit>()
-                        .fetchInfoSchool(schools: [school]);
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => const SchoolInfoPage(),
-                      ),
-                    );
+                    context.read<SchoolInfoCubit>().fetchInfoSchool(schools: [school]);
+                    Navigator.pushNamed(context, 'schoolInfoPage');
                   },
                   child: const Icon(
                     Icons.location_on,

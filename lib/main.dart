@@ -1,5 +1,7 @@
 import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
 import 'package:e_mekdep_school_maps/models/school_model.dart';
+import 'package:e_mekdep_school_maps/routes/routes_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_mekdep_school_maps/pages/home_page.dart';
@@ -12,12 +14,13 @@ void main() async {
   Hive.registerAdapter(SchoolModelAdapter());
   await Hive.openBox<SchoolModel>("schoolsBox");
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  const MyApp({super.key,});
+  final Map<String, WidgetBuilder> routes = RoutesPage.routes;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +36,14 @@ class MyApp extends StatelessWidget {
           create: (context) => SchoolInfoCubit(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'E-Mekdep',
-        home: HomePage(),
+        onGenerateRoute: (settings) {
+          final builder = routes[settings.name!];
+          return CupertinoPageRoute(builder: builder!);
+        },
+        home: const HomePage(),
       ),
     );
   }

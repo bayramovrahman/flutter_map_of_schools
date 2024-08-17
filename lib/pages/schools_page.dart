@@ -1,9 +1,7 @@
-import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
-import 'package:e_mekdep_school_maps/pages/school_info_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_mekdep_school_maps/utilities/shimmer_util.dart';
+import 'package:e_mekdep_school_maps/cubits/cubit_school_info/school_info_cubit.dart';
 import 'package:e_mekdep_school_maps/cubits/cubit_map_service/map_service_cubit.dart';
 
 class SchoolsPage extends StatelessWidget {
@@ -34,15 +32,8 @@ class SchoolsPage extends StatelessWidget {
                         color: Colors.blue,
                       ),
                       onTap: () {
-                        context
-                            .read<SchoolInfoCubit>()
-                            .fetchInfoSchool(schools: [school]);
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => const SchoolInfoPage(),
-                          ),
-                        );
+                        context.read<SchoolInfoCubit>().fetchInfoSchool(schools: [school]);
+                        Navigator.pushNamed(context, 'schoolInfoPage');
                       },
                     ),
                   );
