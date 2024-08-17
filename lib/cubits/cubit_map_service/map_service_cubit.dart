@@ -14,7 +14,7 @@ part 'map_service_cubit.freezed.dart';
 
 class MapServiceCubit extends Cubit<MapServiceState> {
 
-  MapServiceCubit() : super(const MapServiceState.initial()) {
+  MapServiceCubit() : super(const MapServiceState.loading()) {
     fetchSchools();
   }
 

@@ -16,7 +16,6 @@ class _SchoolsPageState extends State<SchoolsPage> {
   @override
   Widget build(BuildContext context) {
     return context.watch<MapServiceCubit>().state.when(
-          initial: () => ShimmerUtils.shimmerListTile(),
           loading: () => ShimmerUtils.shimmerListTile(),
           loaded: (schools) {
             final filteredSchools = schools.where((school) => school.isSecondarySchool == true).toList();

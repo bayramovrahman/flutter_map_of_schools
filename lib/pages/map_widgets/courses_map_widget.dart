@@ -25,7 +25,6 @@ class _CourseMapWidgetState extends State<CourseMapWidget> {
     return BlocBuilder<MapServiceCubit, MapServiceState>(
       builder: (context, state) {
         return state.when(
-          initial: () => const Center(child: CircularProgressIndicator()),
           loading: () => const Center(child: CircularProgressIndicator()),
           loaded: (schools) {
             final List<Marker> markers = schools.where((school) {

@@ -11,7 +11,6 @@ class CourseCenterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return context.watch<MapServiceCubit>().state.when(
-          initial: () => ShimmerUtils.shimmerListTile(),
           loading: () => ShimmerUtils.shimmerListTile(),
           loaded: (schools) {
             final filteredSchools = schools
