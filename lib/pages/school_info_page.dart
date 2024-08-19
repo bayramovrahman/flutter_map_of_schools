@@ -194,30 +194,28 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
-                    child: Text(
-                      school.level != null && school.level is String && school.level!.isNotEmpty && school.level == "special"
-                          ? "Ýöriteşdirilen"
-                          : "Adaty",
-                      style: const TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.white,
+                if (school.level != null && school.level is String && school.level!.isNotEmpty && school.level == "special" && school.isSecondarySchool == true)  
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
+                      child: Text(
+                        "Ýöriteşdirilen",
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
                 const SizedBox(height: 16.0),
                 Container(
                   decoration: BoxDecoration(
-                    color: school.isDigitalized == null ||
-                            school.isDigitalized == false
-                        ? Colors.grey[300]
+                    color: school.isDigitalized == null || school.isDigitalized == false
+                        ? Colors.redAccent
                         : Colors.green[800],
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -230,7 +228,7 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
                       style: TextStyle(
                         fontSize: 16.0,
                         color: school.isDigitalized == null || school.isDigitalized == false
-                            ? Colors.black
+                            ? Colors.red[600]
                             : Colors.white,
                       ),
                     ),
