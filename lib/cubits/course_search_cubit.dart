@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SearchCubit extends Cubit<String> {
-  SearchCubit() : super('');
+class CourseSearchCubit extends Cubit<String> {
+  CourseSearchCubit() : super('');
 
   void searchInput(String searchInput) {
     emit(searchInput);

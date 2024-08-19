@@ -1,4 +1,4 @@
-import 'package:e_mekdep_school_maps/cubits/search_cubit.dart';
+import 'package:e_mekdep_school_maps/cubits/school_search_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_mekdep_school_maps/utilities/shimmer_util.dart';
@@ -20,7 +20,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
     return context.watch<MapServiceCubit>().state.when(
           loading: () => ShimmerUtils.shimmerListTile(),
           loaded: (schools, zoom) {
-            return BlocBuilder<SearchCubit, String>(
+            return BlocBuilder<SchoolSearchCubit, String>(
               builder: (context, state) {
                 final filteredSchools = schools
                     .where((school) =>
@@ -70,7 +70,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
                             ),
                           ),
                           onChanged: (value) {
-                            context.read<SearchCubit>().searchInput(value);
+                            context.read<SchoolSearchCubit>().searchInput(value);
                           },
                         ),
                       ),
@@ -88,11 +88,8 @@ class _SchoolsPageState extends State<SchoolsPage> {
                                   color: Colors.blue,
                                 ),
                                 onTap: () {
-                                  context
-                                      .read<SchoolInfoCubit>()
-                                      .fetchInfoSchool(schools: [school]);
-                                  Navigator.pushNamed(
-                                      context, 'schoolInfoPage');
+                                  context.read<SchoolInfoCubit>().fetchInfoSchool(schools: [school]);
+                                  Navigator.pushNamed(context, 'schoolInfoPage');
                                 },
                               ),
                             );
