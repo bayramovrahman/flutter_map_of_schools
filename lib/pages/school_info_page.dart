@@ -115,7 +115,8 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
     );
   }
 
-  Widget _schoolGalleries({required BuildContext context, required SchoolModel school}) {
+  Widget _schoolGalleries(
+      {required BuildContext context, required SchoolModel school}) {
     return Card(
       color: Colors.grey[200],
       child: Padding(
@@ -203,16 +204,35 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(6, 2, 6, 2),
+                    child: Text(
+                      school.level != null && school.level is String && school.level!.isNotEmpty && school.level == "special"
+                          ? "Ýöriteşdirilen"
+                          : "Adaty",
+                      style: const TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 16.0),
                 Container(
                   decoration: BoxDecoration(
-                    color: school.isDigitalized == null || school.isDigitalized == false
+                    color: school.isDigitalized == null ||
+                            school.isDigitalized == false
                         ? Colors.grey[300]
                         : Colors.green[800],
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
                     child: Text(
                       school.isDigitalized == null || school.isDigitalized == false
                           ? 'Sanly ulgamda elyeter däl'
@@ -317,8 +337,11 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
   }
 
   void _checkPhoneNumber({required SchoolModel school}) async {
-    if (school.phone != null && school.phone is String && school.phone!.isNotEmpty) {
-      String cleanedPhoneNumber = school.phone!.replaceAll('-', '').replaceAll(' ', '');
+    if (school.phone != null &&
+        school.phone is String &&
+        school.phone!.isNotEmpty) {
+      String cleanedPhoneNumber =
+          school.phone!.replaceAll('-', '').replaceAll(' ', '');
       String phoneNumber = "tel:+993$cleanedPhoneNumber";
       if (await canLaunchUrl(Uri.parse(phoneNumber))) {
         await launchUrl(Uri.parse(phoneNumber));
