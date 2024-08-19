@@ -1,0 +1,51 @@
+{
+    "general": {
+        "api_instances": [
+            {
+                "code": "ag",
+                "name": "Aşgabat",
+                "url": "https://mekdep.edu.tm"
+            },
+            {
+                "code": "bm",
+                "name": "Bilim merkezler",
+                "url": "https://mekdep.edu.tm"
+            },
+            {
+                "code": "ark",
+                "name": "Arkadag",
+                "url": "https://mekdep.edu.tm"
+            },
+            {
+                "code": "ah",
+                "name": "Ahal welaýaty",
+                "url": "https://ah.mekdep.edu.tm"
+            },
+            {
+                "code": "mr",
+                "name": "Mary welaýaty",
+                "url": "https://mr.mekdep.edu.tm"
+            },
+            {
+                "code": "lb",
+                "name": "Lebap welaýaty",
+                "url": "https://lb.mekdep.edu.tm"
+            },
+            {
+                "code": "dz",
+                "name": "Daşoguz welaýaty",
+                "url": "https://dz.mekdep.edu.tm"
+            },
+            {
+                "code": "bn",
+                "name": "Balkan welaýaty",
+                "url": "https://bn.mekdep.edu.tm"
+            },
+            {
+                "code": "ag",
+                "name": "Beta",
+                "url": "https://beta.mekdep.org"
+            }
+        ]
+    }
+}
