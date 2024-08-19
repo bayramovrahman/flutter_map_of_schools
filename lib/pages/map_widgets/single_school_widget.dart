@@ -1,4 +1,5 @@
 import 'package:e_mekdep_school_maps/core/map_constants.dart';
+import 'package:e_mekdep_school_maps/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -20,19 +21,7 @@ class SingleSchoolMapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
-          'E-Mekdep',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-      ),
+      appBar: appBarWidget(),
       body: FlutterMap(
         options: MapOptions(
           initialCenter: LatLng(latitude, longitude),

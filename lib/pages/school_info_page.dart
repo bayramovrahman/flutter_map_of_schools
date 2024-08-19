@@ -1,5 +1,6 @@
 import 'package:e_mekdep_school_maps/pages/map_widgets/single_school_widget.dart';
 import 'package:e_mekdep_school_maps/utilities/toast_message.dart';
+import 'package:e_mekdep_school_maps/widgets/appbar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,17 +28,7 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.blue,
-        title: const Text(
-          "E-Mekdep",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: appBarWidget(),
       body: BlocBuilder<SchoolInfoCubit, SchoolInfoState>(
         builder: (context, state) {
           return state.when(
@@ -115,8 +106,7 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
     );
   }
 
-  Widget _schoolGalleries(
-      {required BuildContext context, required SchoolModel school}) {
+  Widget _schoolGalleries({required BuildContext context, required SchoolModel school}) {
     return Card(
       color: Colors.grey[200],
       child: Padding(
