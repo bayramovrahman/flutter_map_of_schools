@@ -37,7 +37,7 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
               final school = schoolInfo.first;
               return SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(6.0),
                   child: Column(
                     children: [
                       _tapWidget(context),
@@ -106,7 +106,8 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
     );
   }
 
-  Widget _schoolGalleries({required BuildContext context, required SchoolModel school}) {
+  Widget _schoolGalleries(
+      {required BuildContext context, required SchoolModel school}) {
     return Card(
       color: Colors.grey[200],
       child: Padding(
@@ -194,7 +195,11 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                if (school.level != null && school.level is String && school.level!.isNotEmpty && school.level == "special" && school.isSecondarySchool == true)  
+                if (school.level != null &&
+                    school.level is String &&
+                    school.level!.isNotEmpty &&
+                    school.level == "special" &&
+                    school.isSecondarySchool == true)
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.blue,
@@ -214,21 +219,24 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
                 const SizedBox(height: 16.0),
                 Container(
                   decoration: BoxDecoration(
-                    color: school.isDigitalized == null || school.isDigitalized == false
-                        ? Colors.redAccent
+                    color: school.isDigitalized == null ||
+                            school.isDigitalized == false
+                        ? Colors.red[200]
                         : Colors.green[800],
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
                     child: Text(
-                      school.isDigitalized == null || school.isDigitalized == false
+                      school.isDigitalized == null ||
+                              school.isDigitalized == false
                           ? 'Sanly ulgamda elyeter däl'
                           : 'Sanly ulgamda elyeter',
                       style: TextStyle(
                         fontSize: 16.0,
-                        color: school.isDigitalized == null || school.isDigitalized == false
-                            ? Colors.red[600]
+                        color: school.isDigitalized == null ||
+                                school.isDigitalized == false
+                            ? Colors.red[900]
                             : Colors.white,
                       ),
                     ),

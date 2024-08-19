@@ -25,7 +25,9 @@ class _SchoolsPageState extends State<SchoolsPage> {
                 final filteredSchools = schools
                     .where((school) =>
                         school.isSecondarySchool == true &&
-                        school.name!.toLowerCase().contains(state.toLowerCase()))
+                        school.name!
+                            .toLowerCase()
+                            .contains(state.toLowerCase()))
                     .toList();
 
                 return RefreshIndicator(
@@ -39,39 +41,70 @@ class _SchoolsPageState extends State<SchoolsPage> {
                           horizontal: 8.0,
                           vertical: 6.0,
                         ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Mekdep gözle ...',
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            prefixIcon: const Icon(
-                              Icons.search,
-                              color: Colors.grey,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical: 14.0,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                              borderSide: const BorderSide(
-                                color: Colors.blue,
-                                width: 1.5,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Mekdep gözle ...',
+                                  hintStyle:
+                                      const TextStyle(color: Colors.grey),
+                                  prefixIcon: const Icon(
+                                    Icons.search,
+                                    color: Colors.grey,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey.shade200,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0,
+                                    vertical: 14.0,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.blue,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  context.read<SchoolSearchCubit>().searchInput(value);
+                                },
                               ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                              borderSide: BorderSide.none,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade300,
+                                    offset: const Offset(2, 2),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.filter_list,
+                                  color: Colors.blue,
+                                ),
+                                iconSize: 28.0,
+                                onPressed: () {},
+                                padding: const EdgeInsets.all(12.0),
+                                splashColor: Colors.blue.shade100,
+                                highlightColor: Colors.transparent,
+                              ),
                             ),
-                          ),
-                          onChanged: (value) {
-                            context.read<SchoolSearchCubit>().searchInput(value);
-                          },
+                          ],
                         ),
                       ),
                       Expanded(
@@ -88,8 +121,11 @@ class _SchoolsPageState extends State<SchoolsPage> {
                                   color: Colors.blue,
                                 ),
                                 onTap: () {
-                                  context.read<SchoolInfoCubit>().fetchInfoSchool(schools: [school]);
-                                  Navigator.pushNamed(context, 'schoolInfoPage');
+                                  context
+                                      .read<SchoolInfoCubit>()
+                                      .fetchInfoSchool(schools: [school]);
+                                  Navigator.pushNamed(
+                                      context, 'schoolInfoPage');
                                 },
                               ),
                             );
