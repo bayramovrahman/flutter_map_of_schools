@@ -47,8 +47,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
                               child: TextField(
                                 decoration: InputDecoration(
                                   hintText: 'Mekdep gözle ...',
-                                  hintStyle:
-                                      const TextStyle(color: Colors.grey),
+                                  hintStyle: const TextStyle(color: Colors.grey),
                                   prefixIcon: const Icon(
                                     Icons.search,
                                     color: Colors.grey,

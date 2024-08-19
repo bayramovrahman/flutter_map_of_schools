@@ -106,8 +106,7 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
     );
   }
 
-  Widget _schoolGalleries(
-      {required BuildContext context, required SchoolModel school}) {
+  Widget _schoolGalleries({required BuildContext context, required SchoolModel school}) {
     return Card(
       color: Colors.grey[200],
       child: Padding(
@@ -208,7 +207,7 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
                     child: const Padding(
                       padding: EdgeInsets.fromLTRB(6, 2, 6, 2),
                       child: Text(
-                        "Ýöriteşdirilen",
+                        "Ýöriteleşdirilen",
                         style: TextStyle(
                           fontSize: 12.0,
                           color: Colors.white,
@@ -221,7 +220,7 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
                   decoration: BoxDecoration(
                     color: school.isDigitalized == null ||
                             school.isDigitalized == false
-                        ? Colors.red[200]
+                        ? Colors.red[100]
                         : Colors.green[800],
                     borderRadius: BorderRadius.circular(16.0),
                   ),
@@ -272,7 +271,7 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
                       ),
                       const SizedBox(width: 6.0),
                       Text(
-                        "+993${school.phone}",
+                        "${school.phone}",
                         style: const TextStyle(
                           fontSize: 18.0,
                         ),
@@ -333,16 +332,24 @@ class _SchoolInfoPageState extends State<SchoolInfoPage> {
   }
 
   void _checkPhoneNumber({required SchoolModel school}) async {
-    if (school.phone != null &&
-        school.phone is String &&
-        school.phone!.isNotEmpty) {
-      String cleanedPhoneNumber =
-          school.phone!.replaceAll('-', '').replaceAll(' ', '');
-      String phoneNumber = "tel:+993$cleanedPhoneNumber";
+    late String phoneNumber;
+    if (school.phone != null && school.phone is String && school.phone!.isNotEmpty) {
+      String cleanedPhoneNumber = school.phone!.replaceAll('-', '').replaceAll(' ', '');
+      if (cleanedPhoneNumber.startsWith('+993')) {
+        phoneNumber = "tel:$cleanedPhoneNumber";
+      } else if (cleanedPhoneNumber.startsWith('993')) {
+        phoneNumber = "tel:+$cleanedPhoneNumber";
+      } else if (cleanedPhoneNumber.length == 6) {
+        phoneNumber = "tel:+99365$cleanedPhoneNumber";
+      } else if (cleanedPhoneNumber.length == 8) {
+        phoneNumber = "tel:+993$cleanedPhoneNumber";
+      } else {
+        ToastMessages.toastErr(errorMessage: "Nädogry telefon belgisi");
+      }
       if (await canLaunchUrl(Uri.parse(phoneNumber))) {
         await launchUrl(Uri.parse(phoneNumber));
       } else {
-        throw 'Nädogry telefon belgisi: $phoneNumber';
+        ToastMessages.toastErr(errorMessage: "Nädogry telefon belgisi");
       }
     } else {
       ToastMessages.toastErr(errorMessage: "Telefon belgisi ýok");
