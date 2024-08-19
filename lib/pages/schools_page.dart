@@ -15,6 +15,18 @@ class SchoolsPage extends StatefulWidget {
 class _SchoolsPageState extends State<SchoolsPage> {
   //
 
+  String? selectedState;
+
+  final List<String> welayatlar = [
+    'Aşgabat şäheri',
+    'Arkadag şäheri',
+    'Balkan welaýaty',
+    'Ahal welaýaty',
+    'Mary welaýaty',
+    'Lebap welaýaty',
+    'Daşoguz welaýaty,'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return context.watch<MapServiceCubit>().state.when(
@@ -25,9 +37,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
                 final filteredSchools = schools
                     .where((school) =>
                         school.isSecondarySchool == true &&
-                        school.name!
-                            .toLowerCase()
-                            .contains(state.toLowerCase()))
+                        school.name!.toLowerCase().contains(state.toLowerCase()))
                     .toList();
 
                 return RefreshIndicator(
@@ -79,6 +89,7 @@ class _SchoolsPageState extends State<SchoolsPage> {
                                 },
                               ),
                             ),
+                            const SizedBox(width: 5.0),
                             Container(
                               decoration: BoxDecoration(
                                 color: Colors.blue.shade50,
@@ -97,7 +108,9 @@ class _SchoolsPageState extends State<SchoolsPage> {
                                   color: Colors.blue,
                                 ),
                                 iconSize: 28.0,
-                                onPressed: () {},
+                                onPressed: () {
+                                  _showStateFilterDialog(context);
+                                },
                                 padding: const EdgeInsets.all(12.0),
                                 splashColor: Colors.blue.shade100,
                                 highlightColor: Colors.transparent,
@@ -139,5 +152,34 @@ class _SchoolsPageState extends State<SchoolsPage> {
           },
           errorMsg: (errorMsg) => Center(child: Text(errorMsg.toString())),
         );
+  }
+
+  void _showStateFilterDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(child: Text('Welaýat saýlaň')),
+          content: SingleChildScrollView(
+            child: Column(
+              children: welayatlar.map((state) {
+                return RadioListTile<String>(
+                  title: Text(state),
+                  value: state,
+                  groupValue: selectedState,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedState = value;
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
